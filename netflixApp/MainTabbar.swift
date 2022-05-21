@@ -13,7 +13,7 @@ class MainTabbar: UITabBarController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemCyan
-        
+            
         
         let vc1 = UINavigationController(rootViewController: HomeVC())
         let vc2 = UINavigationController(rootViewController: UpcomingVC())
@@ -32,7 +32,7 @@ class MainTabbar: UITabBarController {
         vc3.title = "Search"
         vc4.title = "Downloads"
         
-        tabBar.tintColor = .systemPink
+        tabBar.tintColor = .systemOrange
         
         
         

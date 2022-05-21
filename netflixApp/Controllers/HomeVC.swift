@@ -9,6 +9,8 @@ import UIKit
 
 class HomeVC: UIViewController {
     
+    let sectionTitles: [String] = ["Trending Movies", "Popular" ,"Trending Tv", "Upcoming Movies", "Top rated"]
+    
     //created tableview programatically
     private let homeFeedTable: UITableView = {
        
@@ -32,18 +34,22 @@ class HomeVC: UIViewController {
         homeFeedTable.tableHeaderView = headerView
         
         customNavBar()
+        
+        getTrendMovies()
 
     }
     
     private func customNavBar() {
         var image = UIImage(named: "netflixImage")
         image = image?.withRenderingMode(.alwaysOriginal)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
+        //navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
         
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
         ]
+        
+        navigationController?.navigationBar.tintColor = .systemOrange
         
     }
     
@@ -54,12 +60,27 @@ class HomeVC: UIViewController {
         //tüm ekranı kaplasın
         homeFeedTable.frame = view.bounds
     }
+    
+    private func getTrendMovies() {
+        
+        APICaller.shared.getTrendMovies { results in
+            switch results {
+            case .success(let movies):
+                print(movies)
+                
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
+
+    }
 }
 
 extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 10
+        return sectionTitles.count
         
     }
     
@@ -84,6 +105,27 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
+    }
+    
+    //titles
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
+        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+        header.textLabel?.textColor = .systemOrange
+    }
+    
+    
+    //set navigation bar with scrolling behaviour
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let defaultOffset = view.safeAreaInsets.top
+        let offset = scrollView.contentOffset.y + defaultOffset
+        
+        navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -offset))
     }
     
     
