@@ -11,6 +11,8 @@ class CollectionViewTBC: UITableViewCell {
     
     static let identifier = "CollectionViewTBC"
     
+    private var titles: [Title] = [Title]()
+    
     private let collectionView: UICollectionView = {
         
         let layout = UICollectionViewFlowLayout() //for able to use scroll direction
@@ -18,11 +20,12 @@ class CollectionViewTBC: UITableViewCell {
         layout.scrollDirection = .horizontal
        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(TitleCVC.self, forCellWithReuseIdentifier: TitleCVC.identifier)
         return collectionView
         
     }()
     
+    //2.12
     
     
     
@@ -53,10 +56,16 @@ extension CollectionViewTBC: UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .systemBlue
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCVC.identifier, for: indexPath) as? TitleCVC else {
+            return UICollectionViewCell()
+        }
+        
+        cell.configure(with: "")
+        
         
         return cell
+       
     }
     
     

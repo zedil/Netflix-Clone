@@ -7,9 +7,21 @@
 
 import UIKit
 
+
+enum Sections: Int {
+    case TrendMovies = 0
+    case TrendTv = 1
+    case Popular = 2
+    case Upcoming = 3
+    case TopRated = 4
+}
+
+
+
+
 class HomeVC: UIViewController {
     
-    let sectionTitles: [String] = ["Trending Movies", "Popular" ,"Trending Tv", "Upcoming Movies", "Top rated"]
+    let sectionTitles: [String] = ["Trending Movies", "Trending Tv" ,"Popular" ,"Upcoming Movies", "Top rated"]
     
     //created tableview programatically
     private let homeFeedTable: UITableView = {
@@ -62,6 +74,11 @@ class HomeVC: UIViewController {
     }
     
     private func getTrendMovies() {
+        /*
+        APICaller.shared.getTrendingTvs { results in
+            
+        }
+        
         
         APICaller.shared.getTrendMovies { results in
             switch results {
@@ -71,6 +88,10 @@ class HomeVC: UIViewController {
             case .failure(let error):
                 print(error)
             }
+            
+        } */
+        
+        APICaller.shared.getPopularMovie { _ in
             
         }
 
@@ -117,6 +138,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         header.textLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
         header.textLabel?.textColor = .systemOrange
+        header.textLabel?.text = header.textLabel?.text?.capitalFirstLetter()
     }
     
     
