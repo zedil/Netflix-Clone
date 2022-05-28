@@ -116,6 +116,72 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
+        //indexpath sectionına göre case'e girip api çağıracak
+        
+        switch indexPath.section {
+        case Sections.TrendMovies.rawValue:
+            
+            APICaller.shared.getTrendMovies { result in
+                switch result {
+                case .success(let titles):
+                    cell.configure(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        case Sections.TrendTv.rawValue:
+            
+            APICaller.shared.getTrendingTvs { result in
+                switch result {
+                case .success(let titles):
+                    cell.configure(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        case Sections.Popular.rawValue:
+            
+            APICaller.shared.getPopularMovie { result in
+                switch result {
+                case .success(let titles):
+                    cell.configure(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        case Sections.Upcoming.rawValue:
+            
+            APICaller.shared.getUpcomingMovie { result in
+                switch result {
+                case .success(let titles):
+                    cell.configure(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        case Sections.TopRated.rawValue:
+            
+            APICaller.shared.getTopRated { result in
+                switch result {
+                case .success(let titles):
+                    cell.configure(with: titles)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        default:
+            return UITableViewCell()
+            
+        }
+        
+        
+        
+        
         return cell
         
     }

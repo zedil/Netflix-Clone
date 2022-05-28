@@ -45,14 +45,22 @@ class CollectionViewTBC: UITableViewCell {
     
     
     override func layoutSubviews() {
+        super.layoutSubviews()
         collectionView.frame = contentView.bounds
+    }
+    
+    public func configure(with titles: [Title]) {
+        self.titles = titles
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
 }
 
 extension CollectionViewTBC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return titles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -61,7 +69,10 @@ extension CollectionViewTBC: UICollectionViewDelegate, UICollectionViewDataSourc
             return UICollectionViewCell()
         }
         
-        cell.configure(with: "")
+        guard let model = titles[indexPath.row].poster_path else {
+            return UICollectionViewCell()
+        }
+        cell.configure(with: model)
         
         
         return cell
